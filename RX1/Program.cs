@@ -1,19 +1,33 @@
-﻿namespace RX1
+﻿using System.Reactive.Linq;
+
+namespace RX1
 {
     internal class Program
     {
+        private static Sensor sensor = new Sensor();
         static void Main(string[] args)
         {
-            Sensor sensor = new Sensor();
-            sensor.SensorEvents += Sensor_SensorEvents;
-
+            var data = DataMessarment;
+      
+           
+            data.Subscribe(x => Console.WriteLine("xs: " + x.Temp));
             sensor.Start();
 
+
         }
 
-        private static void Sensor_SensorEvents(object? sender, SensorEventArgs e)
+        public static IObservable<Messarement> DataMessarment
         {
-           Console.WriteLine(e.MessarmentTaken);
+            get
+            {
+                return Observable
+                    .FromEventPattern<SensorEventArgs>(
+                        h => sensor.SensorEvents += h,
+                        h => sensor.SensorEvents -= h)
+                    .Select(x => x.EventArgs.MessarmentTaken);
+            }
         }
+
+       
     }
 }

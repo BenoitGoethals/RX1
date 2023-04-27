@@ -12,7 +12,7 @@ namespace RX1
     public class Sensor
     {
         private Random RandomInt=new Random();
-        public  event EventHandler<SensorEventArgs> SensorEvents;
+        public event EventHandler<SensorEventArgs> SensorEvents;
         private   CancellationToken CancellationToken=new CancellationToken();
         private  readonly ConcurrentBag<Messarement> _messarments = new ConcurrentBag<Messarement>();
 
@@ -37,12 +37,13 @@ namespace RX1
         
         public  void Start()
         {
+         
             Task.Factory.StartNew(Run(), CancellationToken);
         }
 
     }
 
-    public class SensorEventArgs
+    public class SensorEventArgs : EventArgs
     {
         public Messarement MessarmentTaken { get; set; }
     }

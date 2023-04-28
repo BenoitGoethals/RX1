@@ -11,10 +11,10 @@ namespace RX1
 {
     public class Sensor
     {
-        private readonly Random _randomInt=new Random();
+        private readonly Random _randomInt=new();
         public event EventHandler<SensorEventArgs>? SensorEvents;
-        private readonly CancellationToken _cancellationToken=new CancellationToken();
-        private  readonly ConcurrentBag<Measurement> _measurements = new ConcurrentBag<Measurement>();
+        private readonly CancellationToken _cancellationToken=new();
+        private  readonly ConcurrentBag<Measurement> _measurements = new();
 
 
         private async  Task<bool> RunSensor()
@@ -52,6 +52,11 @@ namespace RX1
 
     public class SensorEventArgs : EventArgs
     {
+        public SensorEventArgs(Measurement measurementTaken)
+        {
+            MeasurementTaken = measurementTaken;
+        }
+
         public Measurement MeasurementTaken { get; set; }
     }
 }

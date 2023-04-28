@@ -7,14 +7,9 @@ namespace RX1
         private static readonly Sensor sensor = new Sensor();
         static void Main(string[] args)
         {
-           
-
-
             DataMeasurement.Subscribe(x => Console.WriteLine("xs: " + x.Temp));
             DataMeasurementWindSpeed.Subscribe(x => Console.WriteLine("windspeed : " + x.WindSpeed));
             sensor.Start();
-
-
         }
 
         public static IObservable<Measurement> DataMeasurement

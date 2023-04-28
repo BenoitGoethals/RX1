@@ -22,7 +22,7 @@ namespace RX1
             while (!_cancellationToken.IsCancellationRequested)
             {
                 var delay = Task.Delay(500, _cancellationToken);
-                var mes = new Measurement()
+                var mes = new Measurement
                 {
                     Id = Guid.NewGuid(),
                     Temp = _randomInt.Next(60),
@@ -32,7 +32,7 @@ namespace RX1
 
                 };
                 _measurements.Add(mes);
-                SensorEvents?.Invoke(this, new SensorEventArgs() { MeasurementTaken = mes });
+                SensorEvents?.Invoke(this, new SensorEventArgs { MeasurementTaken = mes });
                 await delay;
 
             }
@@ -52,10 +52,8 @@ namespace RX1
 
     public class SensorEventArgs : EventArgs
     {
-        public SensorEventArgs(Measurement measurementTaken)
-        {
-            MeasurementTaken = measurementTaken;
-        }
+        
+        
 
         public Measurement MeasurementTaken { get; set; }
     }

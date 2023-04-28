@@ -32,7 +32,7 @@ namespace RX1
 
                 };
                 _measurements.Add(mes);
-                SensorEvents?.Invoke(this, new SensorEventArgs() { MeasurementTaken = mes });
+                SensorEvents?.Invoke(this, new SensorEventArgs(measurementTaken: mes));
                 await delay;
 
             }

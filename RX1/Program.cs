@@ -4,10 +4,21 @@ namespace RX1
 {
     internal class Program
     {
-        private static readonly Sensor sensor = new Sensor();
+        private static readonly Sensor sensor = new();
         static void Main(string[] args)
         {
-            DataMeasurement.Subscribe(x => Console.WriteLine("xs: " + x.Temp));
+            var t = DataMeasurement;
+            
+            
+            DataMeasurement.Buffer<Measurement>(TimeSpan.FromSeconds(10)).Subscribe(x =>
+            {
+                foreach (var measurement in x)
+                {
+                    Console.WriteLine("xs: " + measurement.Temp);
+                }
+
+               
+            });
             DataMeasurementWindSpeed.Subscribe(x => Console.WriteLine("windspeed : " + x.WindSpeed));
             sensor.Start();
         }

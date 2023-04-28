@@ -17,7 +17,7 @@ namespace RX1
         private  readonly ConcurrentBag<Measurement> _measurements = new();
 
 
-        private async  Task<bool> RunSensor()
+        private async  Task RunSensor()
         {
             while (!_cancellationToken.IsCancellationRequested)
             {
@@ -29,15 +29,11 @@ namespace RX1
                     TimeCreated = DateTime.Now,
                     Humidity = _randomInt.Next(10,11),
                     WindSpeed = _randomInt.Next(5,8)
-
                 };
                 _measurements.Add(mes);
                 SensorEvents?.Invoke(this, new SensorEventArgs(measurementTaken: mes));
                 await delay;
-
             }
-
-            return true;
         }
         
         public  void Start()

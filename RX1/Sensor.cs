@@ -11,40 +11,47 @@ namespace RX1
 {
     public class Sensor
     {
-        private Random RandomInt=new Random();
-        public event EventHandler<SensorEventArgs> SensorEvents;
-        private   CancellationToken CancellationToken=new CancellationToken();
-        private  readonly ConcurrentBag<Messarement> _messarments = new ConcurrentBag<Messarement>();
+        private readonly Random _randomInt=new Random();
+        public event EventHandler<SensorEventArgs>? SensorEvents;
+        private readonly CancellationToken _cancellationToken=new CancellationToken();
+        private  readonly ConcurrentBag<Measurement> _measurements = new ConcurrentBag<Measurement>();
 
 
-        private  Action Run()
+        private async  Task<bool> RunSensor()
         {
-            while (!CancellationToken.IsCancellationRequested)
+            while (!_cancellationToken.IsCancellationRequested)
             {
-                var mes = new Messarement()
+                var delay = Task.Delay(500, _cancellationToken);
+                var mes = new Measurement()
                 {
                     Id = Guid.NewGuid(),
-                    Temp = RandomInt.Next(60),
-                    TimeCreated = DateTime.Now
-                };
-                _messarments.Add(mes);
-                SensorEvents.Invoke(this, new SensorEventArgs() { MessarmentTaken = mes });
+                    Temp = _randomInt.Next(60),
+                    TimeCreated = DateTime.Now,
+                    Humidity = _randomInt.Next(10,11),
+                    WindSpeed = _randomInt.Next(5,8)
 
-             
+                };
+                _measurements.Add(mes);
+                SensorEvents?.Invoke(this, new SensorEventArgs() { MeasurementTaken = mes });
+                await delay;
+
             }
-            return () => { };
+
+            return true;
         }
         
         public  void Start()
         {
+
          
-            Task.Factory.StartNew(Run(), CancellationToken);
+            var task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+            task.Wait(_cancellationToken);
         }
 
     }
 
     public class SensorEventArgs : EventArgs
     {
-        public Messarement MessarmentTaken { get; set; }
+        public Measurement MeasurementTaken { get; set; }
     }
 }

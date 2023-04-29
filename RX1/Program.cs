@@ -4,23 +4,38 @@ namespace RX1
 {
     internal class Program
     {
-        private static readonly Sensor sensor = new();
+        private static readonly Sensor Sensor = new();
+        private static readonly SensorObs SensorObs = new();
+
         static void Main(string[] args)
         {
-            var t = DataMeasurement;
-            
-            
+          
+            // Event based sensor
             DataMeasurement.Buffer<Measurement>(TimeSpan.FromSeconds(10)).Subscribe(x =>
             {
                 foreach (var measurement in x)
                 {
-                    Console.WriteLine("xs: " + measurement.Temp);
+                    Console.WriteLine("Event Temp: " + measurement.Temp);
                 }
 
                
             });
-            DataMeasurementWindSpeed.Subscribe(x => Console.WriteLine("windspeed : " + x.WindSpeed));
-            sensor.Start();
+            DataMeasurementWindSpeed.Subscribe(x => Console.WriteLine("Event windspeed : " + x.WindSpeed));
+           //
+
+            // With observable class sensor
+
+            var obs = SensorObs.Where(x => x.WindSpeed > 5).Buffer<Measurement>(TimeSpan.FromSeconds(10)).Subscribe(x =>
+            {
+                foreach (var measurement in x)
+                {
+                    Console.WriteLine("obs temp: " + measurement.Temp);
+                }
+
+            });
+            SensorObs.Start();
+            Sensor.Start();
+
         }
 
         public static IObservable<Measurement> DataMeasurement
@@ -29,8 +44,8 @@ namespace RX1
             {
                 return Observable
                     .FromEventPattern<SensorEventArgs>(
-                        h => sensor.SensorEvents += h,
-                        h => sensor.SensorEvents -= h)
+                        h => Sensor.SensorEvents += h,
+                        h => Sensor.SensorEvents -= h)
                     .Where(x=>x.EventArgs.MeasurementTaken.Temp>40)
 
                     .Select(x => x.EventArgs.MeasurementTaken);
@@ -44,14 +59,15 @@ namespace RX1
             {
                 return Observable
                     .FromEventPattern<SensorEventArgs>(
-                        h => sensor.SensorEvents += h,
-                        h => sensor.SensorEvents -= h)
+                        h => Sensor.SensorEvents += h,
+                        h => Sensor.SensorEvents -= h)
                     .Where(x => x.EventArgs.MeasurementTaken.WindSpeed > 5)
 
                     .Select(x => x.EventArgs.MeasurementTaken);
             }
         }
 
+        
 
     }
 }

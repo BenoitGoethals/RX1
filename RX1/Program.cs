@@ -21,8 +21,7 @@ namespace RX1
                
             });
             DataMeasurementWindSpeed.Subscribe(x => Console.WriteLine("Event windspeed : " + x.WindSpeed));
-           //
-
+       
             // With observable class sensor
 
             var obs = SensorObs.Where(x => x.WindSpeed > 5).Buffer<Measurement>(TimeSpan.FromSeconds(10)).Subscribe(x =>
@@ -38,6 +37,8 @@ namespace RX1
 
         }
 
+
+        //Event pattern
         public static IObservable<Measurement> DataMeasurement
         {
             get

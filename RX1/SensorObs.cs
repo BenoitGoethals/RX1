@@ -9,7 +9,7 @@ public class SensorObs : IObservable<Measurement>
 {
     private readonly Random _randomInt = new();
     private bool _isRunning;
-    private List<IObserver<Measurement>>? _observers=new List<IObserver<Measurement>>();
+    private readonly List<IObserver<Measurement>>? _observers=new();
     private readonly CancellationToken _cancellationToken = new();
     private readonly ConcurrentBag<Measurement> _measurements = new();
     private async Task RunSensor()
@@ -49,10 +49,11 @@ public class SensorObs : IObservable<Measurement>
        
 
         _isRunning = false;
-        foreach (var observer in _observers.ToList())
-        {
-            observer.OnCompleted();
-        }
+        if (_observers != null)
+            foreach (var observer in _observers.ToList())
+            {
+                observer.OnCompleted();
+            }
     }
        
 
@@ -80,31 +81,14 @@ public class SensorObs : IObservable<Measurement>
 
     public IDisposable Subscribe(IObserver<Measurement> observer)
     {
-        if (!_observers.Contains(observer))
+        if (_observers != null && !_observers.Contains(observer))
         {
             _observers.Add(observer);
         }
 
-        return Disposable.Create(() => _observers.Remove(observer));
+        return Disposable.Create(() => _observers?.Remove(observer));
     }
 
 
 
-    private class Unsubscriber : IDisposable
-    {
-        private List<IObserver<Measurement>> _observers;
-        private IObserver<Measurement> _observer;
-
-        public Unsubscriber(List<IObserver<Measurement>> observers, IObserver<Measurement> observer)
-        {
-            _observers = observers;
-            _observer = observer;
-        }
-
-        public void Dispose()
-        {
-            if (_observers.Contains(_observer))
-                _observers.Remove(_observer);
-        }
-    }
 }

@@ -45,7 +45,6 @@ public class SensorObs : IObservable<Measurement>
             }
         }
        
-
         _isRunning = false;
         if (_observers != null)
             foreach (var observer in _observers.ToList())

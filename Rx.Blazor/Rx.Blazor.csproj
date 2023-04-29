@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  
+   <ItemGroup>
+         <PackageReference Include="ReactiveUI.Blazor" Version="18.4.34" />
+         <PackageReference Include="Syncfusion.Blazor.CircularGauge" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="21.1.41" />
+   </ItemGroup>
+  
+   <ItemGroup>
+     <ProjectReference Include="..\rx.core\rx.core.csproj" />
+   </ItemGroup>
+  
+  
+
+</Project>

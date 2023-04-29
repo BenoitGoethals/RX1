@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using rx.core;
 
 namespace RX1
 {

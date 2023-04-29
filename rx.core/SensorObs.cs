@@ -1,9 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reactive.Disposables;
-using System.Reactive.Subjects;
-using System.Threading;
 
-namespace RX1;
+namespace rx.core;
 
 public class SensorObs : IObservable<Measurement>
 {

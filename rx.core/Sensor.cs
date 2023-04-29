@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 
-namespace RX1
+namespace rx.core
 {
     public class Sensor
     {
@@ -15,14 +8,10 @@ namespace RX1
         public event EventHandler<SensorEventArgs>? SensorEvents;
         private readonly CancellationToken _cancellationToken=new();
         private  readonly ConcurrentBag<Measurement> _measurements = new();
-<<<<<<< HEAD
 
 
         private async  Task RunSensor()
-=======
-        
-        private async  Task<bool> RunSensor()
->>>>>>> 05e058d2b8b3b975c9b2b45cbe4be8d528792227
+
         {
             while (!_cancellationToken.IsCancellationRequested)
             {
@@ -36,11 +25,10 @@ namespace RX1
                     WindSpeed = _randomInt.Next(5,8)
                 };
                 _measurements.Add(mes);
-<<<<<<< HEAD
-                SensorEvents?.Invoke(this, new SensorEventArgs(measurementTaken: mes));
-=======
+
+
                 SensorEvents?.Invoke(this, new SensorEventArgs { MeasurementTaken = mes });
->>>>>>> 05e058d2b8b3b975c9b2b45cbe4be8d528792227
+
                 await delay;
             }
         }

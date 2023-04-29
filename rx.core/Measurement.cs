@@ -1,4 +1,4 @@
-﻿namespace RX1;
+﻿namespace rx.core;
 
 public class Measurement
 {

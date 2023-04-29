@@ -1,8 +1,4 @@
 ﻿
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 namespace RX1
 {
     internal class ConnectivityService

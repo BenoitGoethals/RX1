@@ -15,8 +15,7 @@ namespace RX1
         public event EventHandler<SensorEventArgs>? SensorEvents;
         private readonly CancellationToken _cancellationToken=new();
         private  readonly ConcurrentBag<Measurement> _measurements = new();
-
-
+        
         private async  Task<bool> RunSensor()
         {
             while (!_cancellationToken.IsCancellationRequested)
@@ -27,14 +26,13 @@ namespace RX1
                     Id = Guid.NewGuid(),
                     Temp = _randomInt.Next(60),
                     TimeCreated = DateTime.Now,
-                    Humidity = _randomInt.Next(10,11),
+                    Humidity = _randomInt.Next(10,11),  
                     WindSpeed = _randomInt.Next(5,8)
 
                 };
                 _measurements.Add(mes);
                 SensorEvents?.Invoke(this, new SensorEventArgs { MeasurementTaken = mes });
                 await delay;
-
             }
 
             return true;
@@ -42,8 +40,6 @@ namespace RX1
         
         public  void Start()
         {
-
-         
             var task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
             task.Wait(_cancellationToken);
         }
@@ -52,9 +48,6 @@ namespace RX1
 
     public class SensorEventArgs : EventArgs
     {
-        
-        
-
-        public Measurement MeasurementTaken { get; set; }
+      public Measurement MeasurementTaken { get; set; }
     }
 }

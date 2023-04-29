@@ -15,31 +15,38 @@ namespace RX1
         public event EventHandler<SensorEventArgs>? SensorEvents;
         private readonly CancellationToken _cancellationToken=new();
         private  readonly ConcurrentBag<Measurement> _measurements = new();
+<<<<<<< HEAD
 
 
         private async  Task RunSensor()
+=======
+        
+        private async  Task<bool> RunSensor()
+>>>>>>> 05e058d2b8b3b975c9b2b45cbe4be8d528792227
         {
             while (!_cancellationToken.IsCancellationRequested)
             {
                 var delay = Task.Delay(500, _cancellationToken);
-                var mes = new Measurement()
+                var mes = new Measurement
                 {
                     Id = Guid.NewGuid(),
                     Temp = _randomInt.Next(60),
                     TimeCreated = DateTime.Now,
-                    Humidity = _randomInt.Next(10,11),
+                    Humidity = _randomInt.Next(10,11),  
                     WindSpeed = _randomInt.Next(5,8)
                 };
                 _measurements.Add(mes);
+<<<<<<< HEAD
                 SensorEvents?.Invoke(this, new SensorEventArgs(measurementTaken: mes));
+=======
+                SensorEvents?.Invoke(this, new SensorEventArgs { MeasurementTaken = mes });
+>>>>>>> 05e058d2b8b3b975c9b2b45cbe4be8d528792227
                 await delay;
             }
         }
         
         public  void Start()
         {
-
-         
             var task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
             task.Wait(_cancellationToken);
         }
@@ -48,11 +55,6 @@ namespace RX1
 
     public class SensorEventArgs : EventArgs
     {
-        public SensorEventArgs(Measurement measurementTaken)
-        {
-            MeasurementTaken = measurementTaken;
-        }
-
-        public Measurement MeasurementTaken { get; set; }
+      public Measurement MeasurementTaken { get; set; }
     }
 }

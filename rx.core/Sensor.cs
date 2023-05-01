@@ -9,6 +9,16 @@ namespace rx.core
         private readonly CancellationToken _cancellationToken=new();
         private  readonly ConcurrentBag<Measurement> _measurements = new();
 
+        public Sensor()
+        {
+            var task = Task.Run(async () =>
+            {
+                await RunSensor();
+
+            }, _cancellationToken);
+            task.Wait(_cancellationToken);
+        }
+
 
         private async  Task RunSensor()
 
@@ -35,8 +45,7 @@ namespace rx.core
         
         public  void Start()
         {
-            var task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
-            task.Wait(_cancellationToken);
+          
         }
 
     }

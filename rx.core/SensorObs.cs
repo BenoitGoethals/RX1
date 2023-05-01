@@ -15,34 +15,34 @@ public class SensorObs : IObservable<Measurement>
         if (_isRunning) return;
         _isRunning = true;
 
-        while (_observers is {Count: > 0} && !_cancellationToken.IsCancellationRequested)
+        while (!_cancellationToken.IsCancellationRequested)
         {
-            while (!_cancellationToken.IsCancellationRequested)
-            {
+        
                 var delay = Task.Delay(500, _cancellationToken);
-                foreach (var observer in _observers.ToList())
-                {
-                    var mes = new Measurement()
+                if (_observers != null)
+                    foreach (var observer in _observers.ToList())
                     {
-                        Id = Guid.NewGuid(),
-                        Temp = _randomInt.Next(60),
-                        TimeCreated = DateTime.Now,
-                        Humidity = _randomInt.Next(10, 11),
-                        WindSpeed = _randomInt.Next(5, 8)
-                    };
-                    _measurements.Add(mes);
-                    try
-                    {
-                        observer.OnNext(mes);
+                        var mes = new Measurement()
+                        {
+                            Id = Guid.NewGuid(),
+                            Temp = _randomInt.Next(60),
+                            TimeCreated = DateTime.Now,
+                            Humidity = _randomInt.Next(10, 11),
+                            WindSpeed = _randomInt.Next(5, 8)
+                        };
+                        _measurements.Add(mes);
+                        try
+                        {
+                            observer.OnNext(mes);
+                        }
+                        catch (Exception ex)
+                        {
+                            observer.OnError(ex);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        observer.OnError(ex);
-                    }
-                }
 
                 await delay;
-            }
+            
         }
        
         _isRunning = false;
@@ -56,7 +56,7 @@ public class SensorObs : IObservable<Measurement>
 
     public void Start(){
         
-        var task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+        var task = Task.Run(async () => { await RunSensor().ConfigureAwait(false); }, _cancellationToken);
         task.Wait(_cancellationToken);
     }
 

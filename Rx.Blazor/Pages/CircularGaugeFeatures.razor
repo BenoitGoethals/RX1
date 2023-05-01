@@ -3,12 +3,16 @@
 @using rx.core
 @using System.Reactive.Linq
 @using System.Reactive.Concurrency
+@inject SensorObs Obs;
+@implements IDisposable
 <PageTitle>Circular Gauge</PageTitle>
 <h2>Circular Gauge</h2>
 <h1>@Temp</h1>
 <br />
 <div id="ControlRegion">
-    <SfCircularGauge Theme="Theme.Fluent" EnablePointerDrag="true" >
+    @if (Obs is not null && _disp is not null)
+    {
+    <SfCircularGauge Theme="Theme.Fluent" EnablePointerDrag="true">
         <CircularGaugeTooltipSettings Enable="true"></CircularGaugeTooltipSettings>
         <CircularGaugeAxes>
             <CircularGaugeAxis Direction="GaugeDirection.ClockWise" StartAngle="210" EndAngle="150" Minimum="0" Maximum="120" Radius="80%">
@@ -53,6 +57,8 @@
             </CircularGaugeAxis>
         </CircularGaugeAxes>
     </SfCircularGauge>
+    }
+   <button @onclick="() => { ++Temp; }">click</button>
 </div>
 <br />
 
@@ -73,24 +79,38 @@
 </style>
 @code {
 
-    private readonly SensorObs _sensorObs = new();
 
-    public int Temp { get; set; } = 20;
+    private int _temp;
 
-    protected override async Task OnInitializedAsync()
+    public int Temp
     {
-        
-        if (SynchronizationContext.Current != null)
-            _sensorObs.SubscribeOn(SynchronizationContext.Current).ObserveOn(Scheduler.Default).Where(x => x.WindSpeed > 5)
-                .Subscribe(x =>
-                {
-                    Temp = x.Temp;
-                    this.InvokeAsync(this.StateHasChanged);
-                });
-
-        await Task.Delay(1000);
-        _sensorObs.Start();
+        get => _temp;
+        set { _temp = value; this.InvokeAsync(this.StateHasChanged); }
     }
+
+    private IDisposable? _disp;
+    protected override async  Task OnInitializedAsync()
+    {
+        _disp = Obs.Where(x => x.WindSpeed > 5)
+              .Subscribe(x =>
+              {
+                  Temp = x.Temp;
+
+              });
+        await Task.Run(()=>Obs.Start());
+
+    }
+
+   
+
+
+
+    void IDisposable.Dispose()
+    {
+        _disp?.Dispose();
+        Obs = null;
+    }
+
 }
 
 

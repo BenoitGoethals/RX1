@@ -1,20 +1,26 @@
 ﻿using System.Collections.Concurrent;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 
 namespace rx.core;
 
 public class SensorObs : IObservable<Measurement>
 {
     private readonly Random _randomInt = new();
-    private bool _isRunning;
+    public bool IsRunning { get; private set; }
     private readonly List<IObserver<Measurement>>? _observers=new();
-    private readonly CancellationToken _cancellationToken = new();
+    private CancellationToken _cancellationToken;
+    private readonly CancellationTokenSource _cancellationTokenSource=new CancellationTokenSource();
     private readonly ConcurrentBag<Measurement> _measurements = new();
+    private Task _task;
+
+    
     private async Task RunSensor()
     {
-        if (_isRunning) return;
-        _isRunning = true;
-
+        if (IsRunning) return;
+        IsRunning = true;
+        _cancellationToken=_cancellationTokenSource.Token;
+     
         while (!_cancellationToken.IsCancellationRequested)
         {
         
@@ -28,7 +34,7 @@ public class SensorObs : IObservable<Measurement>
                             Temp = _randomInt.Next(60),
                             TimeCreated = DateTime.Now,
                             Humidity = _randomInt.Next(10, 11),
-                            WindSpeed = _randomInt.Next(5, 8)
+                            WindSpeed = _randomInt.Next(0, 16)
                         };
                         _measurements.Add(mes);
                         try
@@ -44,8 +50,8 @@ public class SensorObs : IObservable<Measurement>
                 await delay;
             
         }
-       
-        _isRunning = false;
+
+        IsRunning = false;
         if (_observers != null)
             foreach (var observer in _observers.ToList())
             {
@@ -55,9 +61,16 @@ public class SensorObs : IObservable<Measurement>
        
 
     public void Start(){
-        
-        var task = Task.Run(async () => { await RunSensor().ConfigureAwait(false); }, _cancellationToken);
-        task.Wait(_cancellationToken);
+
+        _task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+
+     
+    }
+
+    public void Stop()
+    {
+        _cancellationTokenSource.Cancel();
+       
     }
 
 

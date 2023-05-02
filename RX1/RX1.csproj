@@ -10,10 +10,12 @@
   <ItemGroup>
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
-  </ItemGroup>
+      <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
+</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\rx.core\rx.core.csproj" />
-  </ItemGroup>
+      <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
+</ItemGroup>
 
 </Project>

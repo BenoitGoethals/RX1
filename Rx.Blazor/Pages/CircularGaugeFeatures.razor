@@ -8,57 +8,111 @@
 <PageTitle>Circular Gauge</PageTitle>
 <h2>Circular Gauge</h2>
 <h1>@Temp</h1>
+<h1>@Wind</h1>
+<SfButton Content="Start"   @onclick="() => { if(!Obs.IsRunning) Obs.Start(); }"></SfButton>
+<SfButton Content="Stop" @onclick="() => {if(Obs.IsRunning)  Obs.Stop(); }"></SfButton>
 <br />
 <div id="ControlRegion">
     @if (Obs is not null && _disp is not null)
     {
-    <SfCircularGauge Theme="Theme.Fluent" EnablePointerDrag="true">
-        <CircularGaugeTooltipSettings Enable="true"></CircularGaugeTooltipSettings>
-        <CircularGaugeAxes>
-            <CircularGaugeAxis Direction="GaugeDirection.ClockWise" StartAngle="210" EndAngle="150" Minimum="0" Maximum="120" Radius="80%">
-                <CircularGaugeAxisLineStyle Width="10" Color="transparent">
-                </CircularGaugeAxisLineStyle>
-                <CircularGaugeAxisLabelStyle UseRangeColor="true">
-                    <CircularGaugeAxisLabelFont Size="12px" FontFamily="Roboto" FontStyle="Regular">
-                    </CircularGaugeAxisLabelFont>
-                </CircularGaugeAxisLabelStyle>
-                <CircularGaugeAxisMajorTicks Height="15" Offset="5" UseRangeColor="true">
-                </CircularGaugeAxisMajorTicks>
-                <CircularGaugeAxisMinorTicks Height="10" UseRangeColor="true">
-                </CircularGaugeAxisMinorTicks>
-                <CircularGaugeAnnotations>
-                    <CircularGaugeAnnotation Radius="30%" Angle="0" ZIndex="1">
-                        <ContentTemplate>
-                            <div><span style="font-size:14px; color:#9E9E9E; font-family:Regular; margin-left: -33px">Speedometer</span></div>
-                        </ContentTemplate>
-                    </CircularGaugeAnnotation>
-                    <CircularGaugeAnnotation Radius="40%" Angle="180" ZIndex="1">
-                        <ContentTemplate>
-                            <div><span style="font-size:20px; color:#424242; font-family:Regular; margin-left: -33px">65 MPH</span></div>
-                        </ContentTemplate>
-                    </CircularGaugeAnnotation>
-                </CircularGaugeAnnotations>
-                <CircularGaugeRanges>
-                    <CircularGaugeRange Start="0" End="40" Color="#30B32D" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
-                    </CircularGaugeRange>
-                    <CircularGaugeRange Start="40" End="80" Color="#FFDD00" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
-                    </CircularGaugeRange>
-                    <CircularGaugeRange Start="80" End="120" Color="#F03E3E" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
-                    </CircularGaugeRange>
-                </CircularGaugeRanges>
-                <CircularGaugePointers>
-                    <CircularGaugePointer Value="@Temp" Radius="60%" PointerWidth="7">
-                        <CircularGaugeCap Radius="7" Color="#757575">
-                            <CircularGaugeCapBorder Width="8"></CircularGaugeCapBorder>
-                        </CircularGaugeCap>
-                        <CircularGaugeNeedleTail Length="25%"></CircularGaugeNeedleTail>
-                    </CircularGaugePointer>
-                </CircularGaugePointers>
-            </CircularGaugeAxis>
-        </CircularGaugeAxes>
-    </SfCircularGauge>
+        <div id="left" style="width: 20%; float:left">
+            <SfCircularGauge Theme="Theme.Fluent" EnablePointerDrag="true">
+                <CircularGaugeTooltipSettings Enable="true"></CircularGaugeTooltipSettings>
+                <CircularGaugeAxes>
+                    <CircularGaugeAxis Direction="GaugeDirection.ClockWise" StartAngle="210" EndAngle="150" Minimum="0" Maximum="120" Radius="80%">
+                        <CircularGaugeAxisLineStyle Width="10" Color="transparent">
+                        </CircularGaugeAxisLineStyle>
+                        <CircularGaugeAxisLabelStyle UseRangeColor="true">
+                            <CircularGaugeAxisLabelFont Size="12px" FontFamily="Roboto" FontStyle="Regular">
+                            </CircularGaugeAxisLabelFont>
+                        </CircularGaugeAxisLabelStyle>
+                        <CircularGaugeAxisMajorTicks Height="15" Offset="5" UseRangeColor="true">
+                        </CircularGaugeAxisMajorTicks>
+                        <CircularGaugeAxisMinorTicks Height="10" UseRangeColor="true">
+                        </CircularGaugeAxisMinorTicks>
+                        <CircularGaugeAnnotations>
+                            <CircularGaugeAnnotation Radius="30%" Angle="0" ZIndex="1">
+                                <ContentTemplate>
+                                    <div><span style="font-size:14px; color:#9E9E9E; font-family:Regular; margin-left: -33px">Temperature</span></div>
+                                </ContentTemplate>
+                            </CircularGaugeAnnotation>
+                            <CircularGaugeAnnotation Radius="40%" Angle="180" ZIndex="1">
+                                <ContentTemplate>
+                                    <div><span style="font-size:20px; color:#424242; font-family:Regular; margin-left: -33px">@Temp</span></div>
+                                </ContentTemplate>
+                            </CircularGaugeAnnotation>
+                        </CircularGaugeAnnotations>
+                        <CircularGaugeRanges>
+                            <CircularGaugeRange Start="0" End="40" Color="#30B32D" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                            <CircularGaugeRange Start="40" End="80" Color="#FFDD00" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                            <CircularGaugeRange Start="80" End="120" Color="#F03E3E" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                        </CircularGaugeRanges>
+                        <CircularGaugePointers>
+                            <CircularGaugePointer Value="@Temp" Radius="60%" PointerWidth="7">
+                                <CircularGaugeCap Radius="7" Color="#757575">
+                                    <CircularGaugeCapBorder Width="8"></CircularGaugeCapBorder>
+                                </CircularGaugeCap>
+                                <CircularGaugeNeedleTail Length="25%"></CircularGaugeNeedleTail>
+                            </CircularGaugePointer>
+                        </CircularGaugePointers>
+                    </CircularGaugeAxis>
+                </CircularGaugeAxes>
+            </SfCircularGauge>
+        </div>
+
+        <div id="right" style="width: 80%; float:right">
+            <SfCircularGauge Theme="Theme.Fluent" EnablePointerDrag="true">
+                <CircularGaugeTooltipSettings Enable="true"></CircularGaugeTooltipSettings>
+                <CircularGaugeAxes>
+                    <CircularGaugeAxis Direction="GaugeDirection.ClockWise" StartAngle="210" EndAngle="150" Minimum="0" Maximum="20" Radius="80%">
+                        <CircularGaugeAxisLineStyle Width="10" Color="transparent">
+                        </CircularGaugeAxisLineStyle>
+                        <CircularGaugeAxisLabelStyle UseRangeColor="true">
+                            <CircularGaugeAxisLabelFont Size="12px" FontFamily="Roboto" FontStyle="Regular">
+                            </CircularGaugeAxisLabelFont>
+                        </CircularGaugeAxisLabelStyle>
+                        <CircularGaugeAxisMajorTicks Height="15" Offset="5" UseRangeColor="true">
+                        </CircularGaugeAxisMajorTicks>
+                        <CircularGaugeAxisMinorTicks Height="10" UseRangeColor="true">
+                        </CircularGaugeAxisMinorTicks>
+                        <CircularGaugeAnnotations>
+                            <CircularGaugeAnnotation Radius="30%" Angle="0" ZIndex="1">
+                                <ContentTemplate>
+                                    <div><span style="font-size:14px; color:#9E9E9E; font-family:Regular; margin-left: -33px">Wind meter</span></div>
+                                </ContentTemplate>
+                            </CircularGaugeAnnotation>
+                            <CircularGaugeAnnotation Radius="40%" Angle="180" ZIndex="1">
+                                <ContentTemplate>
+                                    <div><span style="font-size:20px; color:#424242; font-family:Regular; margin-left: -33px">@Wind</span></div>
+                                </ContentTemplate>
+                            </CircularGaugeAnnotation>
+                        </CircularGaugeAnnotations>
+                        <CircularGaugeRanges>
+                            <CircularGaugeRange Start="0" End="40" Color="#30B32D" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                            <CircularGaugeRange Start="40" End="80" Color="#FFDD00" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                            <CircularGaugeRange Start="80" End="120" Color="#F03E3E" StartWidth="10" EndWidth="10" RoundedCornerRadius="0">
+                            </CircularGaugeRange>
+                        </CircularGaugeRanges>
+                        <CircularGaugePointers>
+                            <CircularGaugePointer Value="@Wind" Radius="60%" PointerWidth="7">
+                                <CircularGaugeCap Radius="7" Color="#757575">
+                                    <CircularGaugeCapBorder Width="8"></CircularGaugeCapBorder>
+                                </CircularGaugeCap>
+                                <CircularGaugeNeedleTail Length="25%"></CircularGaugeNeedleTail>
+                            </CircularGaugePointer>
+                        </CircularGaugePointers>
+                    </CircularGaugeAxis>
+                </CircularGaugeAxes>
+            </SfCircularGauge>
+        </div>
+
     }
-   <button @onclick="() => { ++Temp; }">click</button>
+
 </div>
 <br />
 
@@ -78,8 +132,6 @@
     }
 </style>
 @code {
-
-
     private int _temp;
 
     public int Temp
@@ -88,8 +140,17 @@
         set { _temp = value; this.InvokeAsync(this.StateHasChanged); }
     }
 
+    public int Wind
+    {
+        get => _wind;
+        set { _wind = value; this.InvokeAsync(this.StateHasChanged); }
+    }
+
     private IDisposable? _disp;
-    protected override async  Task OnInitializedAsync()
+    private IDisposable? _disp2;
+    private int _wind;
+
+    protected override async Task OnInitializedAsync()
     {
         _disp = Obs.Where(x => x.WindSpeed > 5)
               .Subscribe(x =>
@@ -97,16 +158,24 @@
                   Temp = x.Temp;
 
               });
-        await Task.Run(()=>Obs.Start());
+
+        _disp2 = Obs
+            .Subscribe(x =>
+            {
+                Wind = x.WindSpeed;
+
+            });
+        await Task.Run(() => Obs.Start());
 
     }
 
-   
+
 
 
 
     void IDisposable.Dispose()
     {
+        _disp2?.Dispose();
         _disp?.Dispose();
         Obs = null;
     }

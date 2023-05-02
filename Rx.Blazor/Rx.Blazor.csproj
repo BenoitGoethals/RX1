@@ -11,11 +11,13 @@
          <PackageReference Include="Syncfusion.Blazor.CircularGauge" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="21.1.41" />
-   </ItemGroup>
+       <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
+</ItemGroup>
   
    <ItemGroup>
      <ProjectReference Include="..\rx.core\rx.core.csproj" />
-   </ItemGroup>
+       <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
+</ItemGroup>
   
   
 

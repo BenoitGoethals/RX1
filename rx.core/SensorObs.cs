@@ -12,7 +12,7 @@ public class SensorObs : IObservable<Measurement>
     private CancellationToken _cancellationToken;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly ConcurrentBag<Measurement> _measurements = new();
-    private Task _task;
+   
 
 
     private async Task RunSensor()
@@ -62,7 +62,7 @@ public class SensorObs : IObservable<Measurement>
 
     public void Start()
     {
-        _task = Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+         Task.Run(async () => { await RunSensor(); }, _cancellationToken);
     }
 
     public void Stop()

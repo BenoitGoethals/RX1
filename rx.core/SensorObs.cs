@@ -72,20 +72,6 @@ public class SensorObs : IObservable<Measurement>
     }
 
 
-    public void OnCompleted()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnError(Exception error)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnNext(Measurement value)
-    {
-        throw new NotImplementedException();
-    }
 
     public IDisposable Subscribe(IObserver<Measurement> observer)
     {

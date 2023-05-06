@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Rx.Blazor.Data;
 using rx.core;
+using rx.core.chat;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
 
@@ -13,6 +14,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
+builder.Services.AddSingleton<ChatServer>();
 
 
 var app = builder.Build();

@@ -9,6 +9,7 @@
    <ItemGroup>
          <PackageReference Include="ReactiveUI.Blazor" Version="18.4.34" />
          <PackageReference Include="Syncfusion.Blazor.CircularGauge" Version="21.1.41" />
+         <PackageReference Include="Syncfusion.Blazor.Grid" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="21.1.41" />
        <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
@@ -18,6 +19,10 @@
      <ProjectReference Include="..\rx.core\rx.core.csproj" />
        <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
 </ItemGroup>
+  
+   <ItemGroup>
+     <Folder Include="Helpers\" />
+   </ItemGroup>
   
   
 

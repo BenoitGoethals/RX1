@@ -5,20 +5,29 @@ using rx.core;
 using rx.core.chat;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
+using Microsoft.AspNetCore.ResponseCompression;
+using Rx.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSignalR(configure: options => { options.EnableDetailedErrors = true;});
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
 builder.Services.AddSingleton<ChatServer>();
-
+builder.Services.AddScoped<ISensorSignalRClient, SensorSignalRClient>();
+//builder.Services.AddResponseCompression(opts =>
+//{
+//    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+//        new[] { "application/octet-stream" });
+//});
 
 var app = builder.Build();
-
+//app.UseResponseCompression();
 
 
 // Configure the HTTP request pipeline.

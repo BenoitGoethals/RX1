@@ -1,4 +1,6 @@
 
+using rx.core;
+
 namespace rx.webservice
 {
     public class Program
@@ -12,6 +14,7 @@ namespace rx.webservice
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSingleton<TrackEngine>();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();

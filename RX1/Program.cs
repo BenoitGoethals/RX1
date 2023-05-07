@@ -11,6 +11,7 @@ namespace RX1
         static void Main(string[] args)
         {
           
+           
             // Event based sensor
             DataMeasurement.Buffer<Measurement>(TimeSpan.FromSeconds(10)).Subscribe(x =>
             {

@@ -20,14 +20,14 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
 builder.Services.AddSingleton<ChatServer>();
 builder.Services.AddScoped<ISensorSignalRClient, SensorSignalRClient>();
-//builder.Services.AddResponseCompression(opts =>
-//{
-//    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-//        new[] { "application/octet-stream" });
-//});
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 
 var app = builder.Build();
-//app.UseResponseCompression();
+app.UseResponseCompression();
 
 
 // Configure the HTTP request pipeline.

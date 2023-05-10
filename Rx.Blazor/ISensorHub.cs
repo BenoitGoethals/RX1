@@ -1,8 +1,10 @@
-﻿namespace Rx.Blazor;
+﻿using rx.core;
+
+namespace Rx.Blazor;
 
 public interface ISensorHub
 {
-    Task Message( string user, string message);
-    Task MessageToCaller( string user, string message);
-    Task MessageToGroup( string user, string message);
+    Task Message(SensorData message);
+    Task MessageToCaller(SensorData message);
+    Task MessageToGroup(SensorData message);
 }

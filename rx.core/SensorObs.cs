@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace rx.core;
 
-public class SensorObs : IObservable<Measurement>
+public class SensorObs : IObservable<Measurement>,IDisposable
 {
     private readonly Random _randomInt = new();
     public bool IsRunning { get; private set; }
@@ -12,8 +12,27 @@ public class SensorObs : IObservable<Measurement>
     private CancellationToken _cancellationToken;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly ConcurrentBag<Measurement> _measurements = new();
-   
 
+    protected bool Equals(SensorObs other)
+    {
+        return Guid.Equals(other.Guid);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((SensorObs)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return Guid.GetHashCode();
+    }
+
+    public Guid Guid { get; set; } = Guid.NewGuid();
+    public  string Name { get; set; }
 
     private async Task RunSensor()
     {
@@ -33,7 +52,7 @@ public class SensorObs : IObservable<Measurement>
                         Id = Guid.NewGuid(),
                         Temp = _randomInt.Next(60),
                         TimeCreated = DateTime.Now,
-                        Humidity = _randomInt.Next(10, 11),
+                        Humidity = _randomInt.Next(0, 11),
                         WindSpeed = _randomInt.Next(0, 16)
                     };
                     _measurements.Add(mes);
@@ -84,5 +103,9 @@ public class SensorObs : IObservable<Measurement>
     }
 
 
-
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 }
+

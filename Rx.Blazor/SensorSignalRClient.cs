@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using rx.core;
 
 namespace Rx.Blazor;
 
@@ -10,7 +11,7 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
     {
     }
 
-    public void Message(Action<string, string> action)
+    public void Message(Action<SensorData> action)
     {
         if (!Started)
         {
@@ -18,7 +19,7 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
         }
     }
 
-    public void MessageToCaller(Action<string, string> action)
+    public void MessageToCaller(Action<SensorData> action)
     {
         if (!Started)
         {
@@ -26,7 +27,7 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
         }
     }
 
-    public void MessageToGroup(Action<string, string> action)
+    public void MessageToGroup(Action<SensorData> action)
     {
         if (!Started)
         {
@@ -34,18 +35,18 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
         }
     }
 
-    public async Task Message(string user, string message)
+    public async Task Message(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(Message), user,message);
+        await HubConnection.SendAsync(nameof(Message), message);
     }
 
-    public async Task MessageToCaller(string user, string message)
+    public async Task MessageToCaller(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(MessageToCaller), user, message);
+        await HubConnection.SendAsync(nameof(MessageToCaller), message);
     }
 
-    public async Task MessageToGroup(string user, string message)
+    public async Task MessageToGroup(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(MessageToGroup), user, message);
+        await HubConnection.SendAsync(nameof(MessageToGroup), message);
     }
 }

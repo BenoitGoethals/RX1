@@ -39,7 +39,7 @@ namespace SignalDashBoard
                 }
                 else
                 {
-                    obsServer.Start();
+                    obsServer.Restart();
                 }
             }
 

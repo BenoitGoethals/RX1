@@ -11,7 +11,7 @@ public class SensorObs : IObservable<Measurement>, IDisposable
     public bool IsRunning { get; private set; }
     private readonly List<IObserver<Measurement>>? _observers = new();
     private CancellationToken _cancellationToken;
-    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private readonly ConcurrentBag<Measurement> _measurements = new();
 
     protected bool Equals(SensorObs other)
@@ -83,6 +83,11 @@ public class SensorObs : IObservable<Measurement>, IDisposable
     public void Start()
     {
         Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+    }
+
+    public void Restart()
+    {
+        IsRunning = true;
     }
 
     public void Stop()

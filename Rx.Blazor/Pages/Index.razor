@@ -94,15 +94,7 @@
     {
         SensorSignalRClient.Message((SensorData msg) =>
         {
-            if (!_messages.ContainsKey(msg.Sensor))
-            {
-                _messages.Add(msg.Sensor, msg);
-            }
-            else
-            {
-                _messages[msg.Sensor] = msg;
-            }
-
+            _messages[msg.Sensor] = msg;
 
 
             InvokeAsync(this.StateHasChanged);

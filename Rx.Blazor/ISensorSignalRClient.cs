@@ -9,4 +9,8 @@ public interface ISensorSignalRClient: ISensorHub, ISignalRClient
     void Message(Action<SensorData> action);
     void MessageToCaller(Action<SensorData> action);
     void MessageToGroup(Action<SensorData> action);
+    void StartStop(string server);
+
+
+
 }

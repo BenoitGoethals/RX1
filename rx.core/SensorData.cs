@@ -14,6 +14,8 @@ namespace rx.core
         public int Humidy { get; set; }
         public string Sensor { get; set; }
 
+        public Boolean StatusServer { get; set; }
+
         protected bool Equals(SensorData other)
         {
             return Guid.Equals(other.Guid);

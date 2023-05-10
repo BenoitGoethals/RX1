@@ -9,7 +9,7 @@ namespace SignalDashBoard
     public class Worker : BackgroundService,IDisposable
     {
         private readonly ILogger<Worker> _logger;
-        private ConcurrentBag<SensorObs>? _sensorObs=new ConcurrentBag<SensorObs>();
+        public ConcurrentBag<SensorObs>? Obs { get; private set; } = new ConcurrentBag<SensorObs>();
 
 
         private readonly IHubContext<SensorHub,ISensorHub> _sensorHub;
@@ -19,34 +19,34 @@ namespace SignalDashBoard
 
             for (int i = 0; i < 10; i++)
             {
-                _sensorObs.Add(new SensorObs(){Name = i.ToString()});
+                Obs.Add(new SensorObs(){Name = i.ToString()});
             }
             _sensorHub = sensorHub;
+
+            
+
+
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            if (_sensorObs != null)
+            if (Obs != null)
             {
-                 foreach (var sensorOb in _sensorObs)
+                 foreach (var sensorOb in Obs)
                  {
                      sensorOb.Where(x => x.WindSpeed > 5)
                          .Subscribe(x =>
                          {
                              _sensorHub.Clients.All.SendMessage(new SensorData()
-                                 { Humidy = x.Humidity, WindSpeed = x.WindSpeed, Sensor = sensorOb.Name });
+                                 { Humidy = x.Humidity, WindSpeed = x.WindSpeed, Sensor = sensorOb.Name, StatusServer = sensorOb.IsRunning,Temp = x.Temp});
                          });
 
-                     sensorOb
-                         .Subscribe(xt =>
-                         {
-                             _sensorHub.Clients.All.SendMessage(new SensorData()
-                                 { Humidy = xt.Humidity, WindSpeed = xt.WindSpeed, Sensor = sensorOb.Name });
-                         });
-                      
+                     
+
+
                      sensorOb.Start();
 
-                     await Task.Delay(1000, stoppingToken);
+                     await Task.Delay(5000, stoppingToken);
                  }
             }
                
@@ -54,21 +54,23 @@ namespace SignalDashBoard
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {Time}", DateTime.Now);
-           
-                
-              
                 await Task.Delay(1000, stoppingToken);
             }
         }
         void IDisposable.Dispose()
         {
-            if (_sensorObs != null)
-                foreach (var disp2 in _sensorObs)
+            if (Obs != null)
+                foreach (var disp2 in Obs)
                 {
                     disp2?.Dispose();
                 }
 
-            _sensorObs = null;
+            Obs = null;
+        }
+
+        public object Stop(string server)
+        {
+            throw new NotImplementedException();
         }
     }
 }

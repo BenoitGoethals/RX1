@@ -32,18 +32,16 @@ public abstract class SignalRClientBase
     {
         if (!Started)
         {
-            await HubConnection.StartAsync();
-          Started = true;
-            //try
-            //{
-            //    await HubConnection.StartAsync();
-            //    Started = true;
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //    Started = false;
-            //}
+            try
+            {
+                await HubConnection.StartAsync();
+                Started = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Started = false;
+            }
 
         }
     }

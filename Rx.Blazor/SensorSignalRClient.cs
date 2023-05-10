@@ -35,6 +35,11 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
         }
     }
 
+    void ISensorSignalRClient.StartStop(string server)
+    {
+         HubConnection.SendAsync("StartStop", server);
+    }
+
     public async Task Message(SensorData message)
     {
         await HubConnection.SendAsync(nameof(Message), message);
@@ -49,4 +54,9 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
     {
         await HubConnection.SendAsync(nameof(MessageToGroup), message);
     }
+
+   
+
+
+
 }

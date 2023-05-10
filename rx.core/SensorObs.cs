@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 
 namespace rx.core;
 
-public class SensorObs : IObservable<Measurement>,IDisposable
+public class SensorObs : IObservable<Measurement>, IDisposable
 {
     private readonly Random _randomInt = new();
+
     public bool IsRunning { get; private set; }
     private readonly List<IObserver<Measurement>>? _observers = new();
     private CancellationToken _cancellationToken;
@@ -32,7 +33,7 @@ public class SensorObs : IObservable<Measurement>,IDisposable
     }
 
     public Guid Guid { get; set; } = Guid.NewGuid();
-    public  string Name { get; set; }
+    public string Name { get; set; }
 
     private async Task RunSensor()
     {
@@ -42,7 +43,7 @@ public class SensorObs : IObservable<Measurement>,IDisposable
 
         while (!_cancellationToken.IsCancellationRequested)
         {
-
+            if (!IsRunning) continue;
             var delay = Task.Delay(500, _cancellationToken);
             if (_observers != null)
                 foreach (var observer in _observers.ToList())
@@ -65,29 +66,29 @@ public class SensorObs : IObservable<Measurement>,IDisposable
                         observer.OnError(ex);
                     }
                 }
-
             await delay;
+
 
         }
 
         IsRunning = false;
-        if (_observers != null)
-            foreach (var observer in _observers.ToList())
-            {
-                observer.OnCompleted();
-            }
+        //if (_observers != null)
+        //    foreach (var observer in _observers.ToList())
+        //    {
+        //        observer.OnCompleted();
+        //    }
     }
 
 
     public void Start()
     {
-         Task.Run(async () => { await RunSensor(); }, _cancellationToken);
+        Task.Run(async () => { await RunSensor(); }, _cancellationToken);
     }
 
     public void Stop()
     {
-        _cancellationTokenSource.Cancel();
-
+        IsRunning = false;
+        
     }
 
 

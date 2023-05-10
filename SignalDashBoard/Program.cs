@@ -5,7 +5,7 @@ using SignalDashBoard;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<Worker>();
-builder.Services.AddSingleton<SensorObs>();
+
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(

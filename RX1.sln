@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rx.core", "rx.core\rx.core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rx.Blazor", "Rx.Blazor\Rx.Blazor.csproj", "{15622391-ACBD-452A-9DD2-FE3BB7B15B00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rx.webservice", "rx.webservice\rx.webservice.csproj", "{B1A13EFD-226C-418A-92BE-5C38FCD0B796}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalDashBoard", "SignalDashBoard\SignalDashBoard.csproj", "{33A542F8-DF3E-4CEA-A62E-AF9441B799A3}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{15622391-ACBD-452A-9DD2-FE3BB7B15B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15622391-ACBD-452A-9DD2-FE3BB7B15B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15622391-ACBD-452A-9DD2-FE3BB7B15B00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1A13EFD-226C-418A-92BE-5C38FCD0B796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1A13EFD-226C-418A-92BE-5C38FCD0B796}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1A13EFD-226C-418A-92BE-5C38FCD0B796}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1A13EFD-226C-418A-92BE-5C38FCD0B796}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33A542F8-DF3E-4CEA-A62E-AF9441B799A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33A542F8-DF3E-4CEA-A62E-AF9441B799A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33A542F8-DF3E-4CEA-A62E-AF9441B799A3}.Release|Any CPU.ActiveCfg = Release|Any CPU

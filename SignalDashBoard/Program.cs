@@ -12,7 +12,7 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 var app = builder.Build();
-app.MapGet("/", () => "Hello World!");
+//app.MapGet("/", () => "Hello World!");
 app.UseResponseCompression();
 app.MapHub<SensorHub>("/SensorHub");
 app.Run();

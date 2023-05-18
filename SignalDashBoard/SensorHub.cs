@@ -26,7 +26,7 @@ namespace SignalDashBoard
         public async Task SendMessageToGroup(SensorData sensorData)
             => await Clients.All.SendMessageToGroup(sensorData);
 
-        public  Task? StartStop(string server)
+        public async Task StartStop(string server)
         {
 
             var worker = _service.GetServices<IHostedService>().OfType<Worker>().Single();
@@ -39,11 +39,9 @@ namespace SignalDashBoard
                 }
                 else
                 {
-                    obsServer.Restart();
+                     obsServer.Restart();
                 }
             }
-
-            return default;
         }
 
     }

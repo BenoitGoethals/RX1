@@ -12,12 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="CoordinateSharp" Version="2.17.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-      <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
 </ItemGroup>
 
   <ItemGroup>
     <Folder Include="chat\" />
+    <Folder Include="openweather\" />
   </ItemGroup>
 
   <ItemGroup>

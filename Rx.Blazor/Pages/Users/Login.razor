@@ -1,0 +1,48 @@
+﻿@page "/users/login"
+@using Rx.Blazor.Services.Authentication
+@using Rx.Blazor.Helpers
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavManager
+<h3>Login</h3>
+
+<div>
+    <EditForm Model="_loginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <InputText class="form-control" @bind-Value="_loginModel.Email" />
+            <ValidationMessage For="@(() => _loginModel.Email)" />
+        </div>
+        <br/>
+        <div class="form-group">
+            <label for="email">Password</label>
+            <InputText class="form-control" type="password" @bind-Value="_loginModel.Password" />
+            <ValidationMessage For="@(() => _loginModel.Password)" />
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </EditForm>
+
+</div>
+@code
+{
+
+
+    readonly LoginUserDto _loginModel = new LoginUserDto();
+        string _message = string.Empty;
+
+        public async Task HandleLogin()
+        {
+            //var response = await authService.AuthenticateAsync(LoginModel);
+
+            //if (response.Success)
+            //{
+            //    navManager.NavigateTo("/");
+            //}
+
+            //message = response.Message;
+        }
+
+}
+

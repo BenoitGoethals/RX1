@@ -16,9 +16,44 @@
 
 <div class="main">
    <div class="top-row px-4" style="z-index:1111;padding-top:0px">
-        <a href="https://www.syncfusion.com/blazor-components/" target="_blank">Blazor Components</a>
-        <a href="https://blazor.syncfusion.com/documentation/" target="_blank">User Guide</a>
-        <a href="http://blazor.syncfusion.com/" target="_blank">View Demos</a>
+    
+        
+           <div class="nav-item px-3">
+               <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                   <span class="oi oi-home" aria-hidden="true"></span> Home
+               </NavLink>
+           </div>
+           <AuthorizeView>
+               <Authorized>
+                   <div class="nav-item px-3">
+                       <NavLink class="nav-link">
+                           <span class="oi oi-person" aria-hidden="true"></span> @context.User?.Identity?.Name
+                       </NavLink>
+                   </div>
+                   <div class="nav-item px-3">
+                       <NavLink class="nav-link" href="users/logout">
+                           <span class="oi oi-arrow-circle-left" aria-hidden="true"></span> Log Out
+                       </NavLink>
+                   </div>
+                   <hr/>
+                 
+                   
+               </Authorized>
+               <NotAuthorized>
+                   <div class="nav-item px-3">
+                       <NavLink class="nav-link" href="users/register">
+                           <span class="oi oi-person" aria-hidden="true"></span> Register
+                       </NavLink>
+                   </div>
+                   <div class="nav-item px-3">
+                       <NavLink class="nav-link" href="users/login">
+                           <span class="oi oi-person" aria-hidden="true"></span> Login
+                       </NavLink>
+                   </div>
+               </NotAuthorized>
+           </AuthorizeView>
+    
+     
     </div>
 
     <div class="content px-4">

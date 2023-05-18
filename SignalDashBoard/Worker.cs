@@ -3,23 +3,35 @@ using Microsoft.AspNetCore.SignalR;
 using rx.core;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System;
+using System.Net.NetworkInformation;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Newtonsoft.Json;
+using static rx.core.openweather.OpenWeatherHelper;
+using System.Linq;
+using rx.core.openweather;
 
 namespace SignalDashBoard
 {
     public class Worker : BackgroundService,IDisposable
     {
         private readonly ILogger<Worker> _logger;
-        public ConcurrentBag<SensorObs>? Obs { get; private set; } = new ConcurrentBag<SensorObs>();
+        public ConcurrentBag<SensorObs>? Obs { get; private set; } = new();
 
 
         private readonly IHubContext<SensorHub,ISensorHub> _sensorHub;
         public Worker(ILogger<Worker> logger,  IHubContext<SensorHub, ISensorHub> sensorHub)
         {
             _logger = logger;
-
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Obs.Add(new SensorObs(){Name = i.ToString()});
+
+                Obs?.Add(new SensorObs());
+            };
+
+            foreach (var loc in OpenWeatherHelper.GetCities())
+            {
+                Obs?.Add(new SensorObs(loc.CityName, new OpenWeatherData(loc)));
             }
             _sensorHub = sensorHub;
 
@@ -28,13 +40,14 @@ namespace SignalDashBoard
 
         }
 
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             if (Obs != null)
             {
                  foreach (var sensorOb in Obs)
                  {
-                     sensorOb.Where(x => x.WindSpeed > 5)
+                     sensorOb
                          .Subscribe(x =>
                          {
                              _sensorHub.Clients.All.SendMessage(new SensorData()
@@ -46,14 +59,14 @@ namespace SignalDashBoard
 
                      sensorOb.Start();
 
-                     await Task.Delay(5000, stoppingToken);
+                    
                  }
             }
                
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {Time}", DateTime.Now);
+                
                 await Task.Delay(1000, stoppingToken);
             }
         }

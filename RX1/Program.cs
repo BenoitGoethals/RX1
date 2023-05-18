@@ -6,7 +6,7 @@ namespace RX1
     internal class Program
     {
         private static readonly Sensor Sensor = new();
-        private static readonly SensorObs SensorObs = new();
+        private static readonly SensorObs? SensorObs;
 
         static void Main(string[] args)
         {

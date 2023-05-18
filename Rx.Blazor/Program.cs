@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Rx.Blazor.Data;
 using rx.core;
@@ -8,6 +9,10 @@ using Syncfusion.Licensing;
 using Microsoft.AspNetCore.ResponseCompression;
 using Rx.Blazor;
 
+using Rx.Blazor.Services.Authentication;
+using Rx.Blazor.Services.Base;
+using Blazored.LocalStorage;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSignalR(configure: options => { options.EnableDetailedErrors = true;});
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
@@ -25,7 +31,13 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
+builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri(builder.Configuration["BaseAddress"] ?? string.Empty));
 
+//builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+//builder.Services.AddScoped<ApiAuthenticationStateProvider>();
+//builder.Services.AddScoped<AuthenticationStateProvider>(p =>
+    //p.GetRequiredService<ApiAuthenticationStateProvider>());
 var app = builder.Build();
 app.UseResponseCompression();
 
@@ -45,7 +57,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

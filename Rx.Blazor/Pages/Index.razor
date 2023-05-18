@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
+@using Rx.Blazor.Services.Authentication
 @using rx.core
 @using Syncfusion.Blazor.Cards
 @inject NavigationManager Navigation
@@ -23,7 +24,7 @@
                 <div class="col-md-4">
 
                     <SfCard>
-                        <CardHeader Title="Climat Sensor Mars" SubTitle="@_messages[sens].Sensor" />
+                        <CardHeader Title="Climat Sensor" SubTitle="@_messages[sens].Sensor" />
                       
                         <CardContent>@((MarkupString)MakeContent(@_messages[sens]))</CardContent>
                         <CardFooter>
@@ -86,7 +87,7 @@
 
 @code {
 
-    private bool _isChecked = true;
+ 
 
     private readonly Dictionary<string, SensorData> _messages = new Dictionary<string, SensorData>();
 

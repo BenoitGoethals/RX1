@@ -25,8 +25,9 @@ builder.Services.AddSignalR(configure: options => { options.EnableDetailedErrors
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
 builder.Services.AddSingleton<ChatServer>();
-builder.Services.AddScoped<IBackendSignalRClient, SignalRClient>();
 builder.Services.AddScoped<IBackendSignalRTrackerClient, SignalRTrackerClient>();
+builder.Services.AddScoped<IBackendSignalRClient, SignalRClient>();
+
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(

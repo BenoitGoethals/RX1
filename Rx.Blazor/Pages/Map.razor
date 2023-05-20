@@ -1,4 +1,4 @@
-﻿@page "/Map"
+﻿@page "/"
 @using Syncfusion.Blazor.Maps
 @using Syncfusion.Blazor
 @using rx.core.track
@@ -7,22 +7,26 @@
 
 @inject IBackendSignalRTrackerClient SignalRClient
 <div >
-    <SfMaps  Background="transparent">
-        <MapsAreaSettings Background="transparent" />
+    @if (this.MarkerDatas.Count == 0)
+{
+    <div class="e-error">
+        <div class="e-error-content">No results found.</div>
+    </div>
+}
+else
+{
+    <SfMaps Background="transparent">
+        <MapsAreaSettings Background="transparent"/>
         <MapsTitleSettings Text="Headquarters of the United Nations">
-            <MapsTitleTextStyle FontFamily="Segoe UI" />
+            <MapsTitleTextStyle FontFamily="Segoe UI"/>
         </MapsTitleSettings>
-        <MapsCenterPosition Latitude=" 48.13726" Longitude="11.57558" />
-        <MapsZoomSettings Enable="true" ZoomFactor="10" />
+        <MapsCenterPosition Latitude="48.13726" Longitude="11.57558"/>
+        <MapsZoomSettings Enable="true" ZoomFactor="15" />
+
         <MapsLayers>
-            <MapsLayer UrlTemplate="https://a.tile.openstreetmap.org/level/tileX/tileY.png" TValue="string">
+            <MapsLayer UrlTemplate="https://a.tile.openstreetmap.org/level/tileX/tileY.png"  TValue="string">
                 <MapsMarkerSettings>
-                    <MapsMarker Visible="true"  DataSource="@MarkerDatas" TValue="Track" >
-                        <ChildContent>
-                            <MapsMarkerTooltipSettings Visible="true" ValuePath="Name">
-                                <MapsMarkerTooltipTextStyle FontFamily="Segoe UI"></MapsMarkerTooltipTextStyle>
-                            </MapsMarkerTooltipSettings>
-                        </ChildContent>
+                        <MapsMarker Visible="true" DataSource="@MarkerDatas" TValue="TrackDto"  Height="25" Width="15">
                         
                     </MapsMarker>
                 </MapsMarkerSettings>
@@ -32,11 +36,13 @@
     <div class="urllink">
         <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
     </div>
-    <br />
+    <br/>
     <div class="urllink">
         Source:
         <a href="https://en.wikipedia.org/wiki/Headquarters_of_the_United_Nations" target="_blank">en.wikipedia.org</a>
     </div>
+    }
+
 </div>
 <style>
     .markerTemplate {
@@ -51,14 +57,12 @@
 @code {
   
 
-    public List<Track> MarkerDatas = new();
-
-
-
+    public List<TrackDto> MarkerDatas = new();
 
     protected override async Task OnInitializedAsync()
     {
-        SignalRClient.SendTrack((Track msg) =>
+     
+        SignalRClient.SendTrack(msg =>
         {
             MarkerDatas.Add(msg);
 

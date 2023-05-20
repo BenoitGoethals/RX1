@@ -16,7 +16,7 @@ public class SignalRClient : SignalRClientBase, IBackendSignalRClient
     {
         if (!Started)
         {
-            HubConnection.On("Message", action);
+            Connection.On("Message", action);
         }
     }
 
@@ -24,7 +24,7 @@ public class SignalRClient : SignalRClientBase, IBackendSignalRClient
     {
         if (!Started)
         {
-            HubConnection.On(nameof(MessageToCaller), action);
+            Connection.On(nameof(MessageToCaller), action);
         }
     }
 
@@ -32,13 +32,13 @@ public class SignalRClient : SignalRClientBase, IBackendSignalRClient
     {
         if (!Started)
         {
-            HubConnection.On(nameof(MessageToGroup), action);
+            Connection.On(nameof(MessageToGroup), action);
         }
     }
 
     public void StartStopSensor(string server)
     {
-        HubConnection.SendAsync("StartStop", server);
+        Connection.SendAsync("StartStop", server);
     }
 
 
@@ -46,17 +46,17 @@ public class SignalRClient : SignalRClientBase, IBackendSignalRClient
 
     public async Task Message(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(Message), message);
+        await Connection.SendAsync(nameof(Message), message);
     }
 
     public async Task MessageToCaller(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(MessageToCaller), message);
+        await Connection.SendAsync(nameof(MessageToCaller), message);
     }
 
     public async Task MessageToGroup(SensorData message)
     {
-        await HubConnection.SendAsync(nameof(MessageToGroup), message);
+        await Connection.SendAsync(nameof(MessageToGroup), message);
     }
 
 

@@ -12,20 +12,24 @@ public abstract class SignalRClientBase
 
     protected bool Started { get; private set; }
 
-    protected SignalRClientBase(NavigationManager navigationManager, string hubPath) =>
-        HubConnection = new HubConnectionBuilder()
+    protected SignalRClientBase(NavigationManager navigationManager, string hubPath)
+    {
+        Connection = new HubConnectionBuilder()
             .WithUrl(navigationManager.ToAbsoluteUri(hubPath))
             .WithAutomaticReconnect()
             .Build();
+        
+    }
+
 
     public bool IsConnected =>
-        HubConnection.State == HubConnectionState.Connected;
+        Connection.State == HubConnectionState.Connected;
 
-    protected HubConnection HubConnection { get; private set; }
+    protected HubConnection Connection { get; private set; }
 
     public async ValueTask DisposeAsync()
     {
-        await HubConnection.DisposeAsync();
+        await Connection.DisposeAsync();
     }
 
     public async Task Start()
@@ -34,7 +38,7 @@ public abstract class SignalRClientBase
         {
             try
             {
-                await HubConnection.StartAsync();
+                await Connection.StartAsync();
                 Started = true;
             }
             catch (Exception e)

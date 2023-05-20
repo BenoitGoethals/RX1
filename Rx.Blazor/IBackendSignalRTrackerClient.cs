@@ -5,8 +5,8 @@ namespace Rx.Blazor;
 public interface IBackendSignalRTrackerClient : ISignalRClient
 {
 
-    void SendTrack(Action<Track> action);
-    void SendTrackToCaller(Action<Track> action);
-    void SendTrackToGroup(Action<Track> action);
+    void SendTrack(Action<TrackDto> action);
+    void SendTrackToCaller(Action<TrackDto> action);
+    void SendTrackToGroup(Action<TrackDto> action);
     void StartStopTracker(string server);
 }

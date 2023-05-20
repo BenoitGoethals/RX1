@@ -3,9 +3,11 @@ using rx.core;
 using SignalDashBoard;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(configure: options => { options.EnableDetailedErrors = true;  });
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<TrackWorker>();
+
+  
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -15,5 +17,5 @@ var app = builder.Build();
 //app.MapGet("/", () => "Hello World!");
 app.UseResponseCompression();
 app.MapHub<SensorHub>("/SensorHub");
-app.MapHub<SensorHub>("/TrackHub"); 
+app.MapHub<TrackHub>("/TrackHub"); 
 app.Run();

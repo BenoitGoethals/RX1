@@ -30,7 +30,16 @@ public class TrackWorker : BackgroundService, IDisposable
                         h => engine.TrackEngineEvents -= h)
                     .Select(x => x.EventArgs.Track).Subscribe(t =>
                     {
-                        if (t != null) _hubContext.Clients.All.SendTrack(t);
+                        if (t == null) return;
+                        if (t.Location != null)
+                            _hubContext.Clients.All.SendTrack(new TrackDto()
+                            {
+                                Description = t.Description,
+                                latitude = t.Location.Latitude.DecimalDegree,
+                                Longitude = t.Location.Longitude.DecimalDegree,
+                                Name = t.Name,
+                                SymbolCode = t.SymbolCode
+                            });
                     });
 
                 engine.Start();

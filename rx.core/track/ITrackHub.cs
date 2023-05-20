@@ -3,9 +3,9 @@
 public interface ITrackHub
 {
 
-    Task SendTrack(Track track);
-    Task SendTrackToCaller(Track track);
-    Task SendTrackToGroup(Track track);
+    Task SendTrack(TrackDto track);
+    Task SendTrackToCaller(TrackDto track);
+    Task SendTrackToGroup(TrackDto track);
 
     Task StartStopTracker(string server);
 }

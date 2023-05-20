@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\rx.core\rx.core.csproj" />
-      <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />
+    
 </ItemGroup>
 
 </Project>

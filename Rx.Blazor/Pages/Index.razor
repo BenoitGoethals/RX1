@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/map"
 @using rx.core.sensor
 @using Microsoft.AspNetCore.SignalR.Client
 @using Rx.Blazor.Services.Authentication
@@ -94,7 +94,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        SignalRClient.Message((SensorData msg) =>
+        SignalRClient.Message(msg =>
         {
             _messages[msg.Sensor] = msg;
 

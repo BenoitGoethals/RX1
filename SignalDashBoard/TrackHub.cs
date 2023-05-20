@@ -14,13 +14,13 @@ public class TrackHub : Hub<ITrackHub>
         this._service = service;
     }
 
-    public async Task SendTrack(Track track)
+    public async Task SendTrack(TrackDto track)
         => await Clients.All.SendTrack(track);
 
-    public async Task SendTrackToCaller(Track track)
+    public async Task SendTrackToCaller(TrackDto track)
         => await Clients.Caller.SendTrack(track);
 
-    public async Task SendTrackToGroup(Track track)
+    public async Task SendTrackToGroup(TrackDto track)
         => await Clients.All.SendTrackToGroup(track);
 
     public async Task StartStop(string server)

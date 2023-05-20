@@ -13,51 +13,51 @@ public class SignalRTrackerClient : SignalRClientBase, IBackendSignalRTrackerCli
     }
 
 
-    public void SendTrack(Action<Track> action)
+    public void SendTrack(Action<TrackDto> action)
     {
 
         if (!Started)
         {
-            HubConnection.On("SendTrack", action);
+            Connection.On("SendTrack", action);
         }
     }
 
-    public void SendTrackToCaller(Action<Track> action)
+    public void SendTrackToCaller(Action<TrackDto> action)
     {
 
         if (!Started)
         {
-            HubConnection.On("SendTrackToCaller", action);
+            Connection.On("SendTrackToCaller", action);
         }
     }
 
-    public void SendTrackToGroup(Action<Track> action)
+    public void SendTrackToGroup(Action<TrackDto> action)
     {
         if (!Started)
         {
-            HubConnection.On(nameof(SendTrackToGroup), action);
+            Connection.On(nameof(SendTrackToGroup), action);
         }
     }
 
     public void StartStopTracker(string server)
     {
-        HubConnection.SendAsync("StartStopTracker", server);
+        Connection.SendAsync("StartStopTracker", server);
     }
 
   
 
     public async Task SendTrack(Track message)
     {
-        await HubConnection.SendAsync(nameof(SendTrack), message);
+        await Connection.SendAsync(nameof(SendTrack), message);
     }
 
     public async Task SendTrackToCaller(Track message)
     {
-        await HubConnection.SendAsync(nameof(SendTrackToCaller), message);
+        await Connection.SendAsync(nameof(SendTrackToCaller), message);
     }
 
     public async Task SendTrackToGroup(Track message)
     {
-        await HubConnection.SendAsync(nameof(SendTrackToGroup), message);
+        await Connection.SendAsync(nameof(SendTrackToGroup), message);
     }
 }

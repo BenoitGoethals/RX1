@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace rx.core
+namespace rx.core.sensor
 {
     public class SensorData
     {
@@ -14,7 +14,7 @@ namespace rx.core
         public int Humidy { get; set; }
         public string Sensor { get; set; }
 
-        public Boolean StatusServer { get; set; }
+        public bool StatusServer { get; set; }
 
         protected bool Equals(SensorData other)
         {
@@ -25,7 +25,7 @@ namespace rx.core
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((SensorData)obj);
         }
 

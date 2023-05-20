@@ -1,5 +1,5 @@
 ﻿using System.Reactive.Linq;
-using rx.core;
+using rx.core.sensor;
 
 namespace RX1
 {

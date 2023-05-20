@@ -1,13 +1,13 @@
 ﻿using System.Collections.Concurrent;
 
-namespace rx.core
+namespace rx.core.sensor
 {
     public class Sensor
     {
-        private readonly Random _randomInt=new();
+        private readonly Random _randomInt = new();
         public event EventHandler<SensorEventArgs>? SensorEvents;
-        private readonly CancellationToken _cancellationToken=new();
-        private  readonly ConcurrentBag<Measurement> _measurements = new();
+        private readonly CancellationToken _cancellationToken = new();
+        private readonly ConcurrentBag<Measurement> _measurements = new();
 
         public Sensor()
         {
@@ -20,7 +20,7 @@ namespace rx.core
         }
 
 
-        private async  Task RunSensor()
+        private async Task RunSensor()
 
         {
             while (!_cancellationToken.IsCancellationRequested)
@@ -31,8 +31,8 @@ namespace rx.core
                     Id = Guid.NewGuid(),
                     Temp = _randomInt.Next(60),
                     TimeCreated = DateTime.Now,
-                    Humidity = _randomInt.Next(10,11),  
-                    WindSpeed = _randomInt.Next(5,8)
+                    Humidity = _randomInt.Next(10, 11),
+                    WindSpeed = _randomInt.Next(5, 8)
                 };
                 _measurements.Add(mes);
 
@@ -42,16 +42,16 @@ namespace rx.core
                 await delay;
             }
         }
-        
-        public  void Start()
+
+        public void Start()
         {
-          
+
         }
 
     }
 
     public class SensorEventArgs : EventArgs
     {
-      public Measurement MeasurementTaken { get; set; }
+        public Measurement MeasurementTaken { get; set; }
     }
 }

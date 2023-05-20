@@ -10,9 +10,10 @@
          <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
          <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
          <PackageReference Include="ReactiveUI.Blazor" Version="18.4.34" />
-         <PackageReference Include="Syncfusion.Blazor.Cards" Version="21.2.3" />
+         <PackageReference Include="Syncfusion.Blazor.Cards" Version="21.1.41" />
          <PackageReference Include="Syncfusion.Blazor.CircularGauge" Version="21.1.41" />
          <PackageReference Include="Syncfusion.Blazor.Grid" Version="21.1.41" />
+         <PackageReference Include="Syncfusion.Blazor.Maps" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="21.1.41" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="21.1.41" />
        <PackageReference Include="Syncfusion.Blazor.Buttons" Version="21.1.41" />

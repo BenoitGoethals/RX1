@@ -1,19 +1,19 @@
 ﻿using System.Collections.Concurrent;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using static rx.core.openweather.OpenWeatherHelper;
 
-namespace rx.core;
+
+namespace rx.core.sensor;
 
 public class SensorObs : IObservable<Measurement>, IDisposable, ISensorObs
 {
     private readonly Random _randomInt = new();
     private readonly ISensorData _dataFunc;
 
-    public SensorObs(string name,ISensorData sensorData)
+    public SensorObs(string name, ISensorData sensorData)
     {
         Name = name;
-        this._dataFunc= sensorData;
+        _dataFunc = sensorData;
     }
 
     /// <summary>
@@ -21,11 +21,11 @@ public class SensorObs : IObservable<Measurement>, IDisposable, ISensorObs
     /// </summary>
     public SensorObs()
     {
-        this.Name = "test"+ _randomInt.NextDouble();
+        Name = "test" + _randomInt.NextDouble();
         _dataFunc = new RandomData();
     }
 
-   
+
 
     public bool IsRunning { get; private set; }
     private readonly List<IObserver<Measurement>>? _observers = new();
@@ -42,7 +42,7 @@ public class SensorObs : IObservable<Measurement>, IDisposable, ISensorObs
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
+        if (obj.GetType() != GetType()) return false;
         return Equals((SensorObs)obj);
     }
 
@@ -86,7 +86,7 @@ public class SensorObs : IObservable<Measurement>, IDisposable, ISensorObs
 
                     }
                 }
-         
+
             await delay;
 
 
@@ -114,7 +114,7 @@ public class SensorObs : IObservable<Measurement>, IDisposable, ISensorObs
     public void Stop()
     {
         IsRunning = false;
-        
+
     }
 
 

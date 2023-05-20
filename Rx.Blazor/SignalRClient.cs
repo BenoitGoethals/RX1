@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using rx.core;
+using rx.core.sensor;
+using rx.core.track;
 
 namespace Rx.Blazor;
 
-public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
+public class SignalRClient : SignalRClientBase, IBackendSignalRClient
 {
-    public SensorSignalRClient(NavigationManager navigationManager)
+    public SignalRClient(NavigationManager navigationManager)
         : base(navigationManager, "https://localhost:7109/SensorHub")
     {
     }
@@ -15,7 +16,7 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
     {
         if (!Started)
         {
-            HubConnection.On("SendMessage", action);
+            HubConnection.On("Message", action);
         }
     }
 
@@ -23,7 +24,7 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
     {
         if (!Started)
         {
-            HubConnection.On(nameof(Message), action);
+            HubConnection.On(nameof(MessageToCaller), action);
         }
     }
 
@@ -35,10 +36,13 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
         }
     }
 
-    void ISensorSignalRClient.StartStop(string server)
+    public void StartStopSensor(string server)
     {
-         HubConnection.SendAsync("StartStop", server);
+        HubConnection.SendAsync("StartStop", server);
     }
+
+
+
 
     public async Task Message(SensorData message)
     {
@@ -54,9 +58,6 @@ public class SensorSignalRClient : SignalRClientBase, ISensorSignalRClient
     {
         await HubConnection.SendAsync(nameof(MessageToGroup), message);
     }
-
-   
-
 
 
 }

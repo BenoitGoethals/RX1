@@ -1,4 +1,4 @@
-﻿namespace rx.core;
+﻿namespace rx.core.sensor;
 
 public interface ISensorData
 {

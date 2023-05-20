@@ -1,11 +1,12 @@
 ﻿@page "/"
+@using rx.core.sensor
 @using Microsoft.AspNetCore.SignalR.Client
 @using Rx.Blazor.Services.Authentication
 @using rx.core
 @using Syncfusion.Blazor.Cards
 @inject NavigationManager Navigation
 
-@inject ISensorSignalRClient SensorSignalRClient
+@inject IBackendSignalRClient SignalRClient
 <PageTitle>Board</PageTitle>
 
 <h1>Board</h1>
@@ -93,7 +94,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        SensorSignalRClient.Message((SensorData msg) =>
+        SignalRClient.Message((SensorData msg) =>
         {
             _messages[msg.Sensor] = msg;
 
@@ -101,7 +102,7 @@
             InvokeAsync(this.StateHasChanged);
         });
 
-        await SensorSignalRClient.Start();
+        await SignalRClient.Start();
     }
 
 
@@ -110,7 +111,7 @@
 
     private void ChangeStatusServer(string server)
     {
-        SensorSignalRClient.StartStop(server);
+        SignalRClient.StartStopSensor(server);
 
 
     }

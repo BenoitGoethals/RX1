@@ -1,15 +1,18 @@
-﻿using rx.core;
+﻿using rx.core.sensor;
+using rx.core.track;
 
 namespace Rx.Blazor;
 
-public interface ISensorSignalRClient: ISensorHub, ISignalRClient
+public interface IBackendSignalRClient:  ISignalRClient
 {
     // Used to allow the clients to take action when the server event occurs
   
     void Message(Action<SensorData> action);
     void MessageToCaller(Action<SensorData> action);
     void MessageToGroup(Action<SensorData> action);
-    void StartStop(string server);
+    void StartStopSensor(string server);
+
+
 
 
 

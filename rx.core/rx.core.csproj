@@ -18,13 +18,6 @@
 
   <ItemGroup>
     <Folder Include="chat\" />
-    <Folder Include="openweather\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="geo.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

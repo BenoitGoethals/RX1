@@ -6,7 +6,7 @@ namespace Rx.Blazor;
 public abstract class SignalRClientBase
     : ISignalRClient, IAsyncDisposable
 {
-    private readonly ILogger<SignalRClientBase> _logger;
+  
 
 
 

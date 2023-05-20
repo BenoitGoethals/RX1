@@ -1,6 +1,6 @@
-﻿namespace rx.core;
+﻿namespace rx.core.sensor.openweather;
 
-public class OpenWeatherObs:ISensorObs
+public class OpenWeatherObs : ISensorObs
 {
     public bool IsRunning { get; }
     public string Name { get; set; }

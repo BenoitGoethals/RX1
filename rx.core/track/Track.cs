@@ -1,16 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
 using CoordinateSharp;
 
-namespace rx.core;
+namespace rx.core.track;
 
 public class Track
 {
-    public Guid IdGuid { get; set; }
+    public Guid IdGuid { get; } =Guid.NewGuid();
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public string SymbolCode { get; set; }
+    public string? SymbolCode { get; set; }
 
-    public Coordinate Location { get; set; }
+    public Coordinate? Location { get; set; }
 
     protected bool Equals(Track other)
     {
@@ -21,8 +21,8 @@ public class Track
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((Track) obj);
+        if (obj.GetType() != GetType()) return false;
+        return Equals((Track)obj);
     }
 
     public override int GetHashCode()
@@ -30,7 +30,7 @@ public class Track
         return IdGuid.GetHashCode();
     }
 
-    public static Track FromCsv(string? csvLine) 
+    public static Track FromCsv(string? csvLine)
     {
         string?[]? values = csvLine?.Split(';');
         var track = new Track

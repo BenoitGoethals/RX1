@@ -1,31 +1,22 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
-using rx.core;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System;
-using System.Net.NetworkInformation;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Newtonsoft.Json;
-using static rx.core.openweather.OpenWeatherHelper;
-using System.Linq;
 using rx.core.openweather;
+using rx.core.sensor;
+using rx.core.sensor.openweather;
 
 namespace SignalDashBoard
 {
-    public class Worker : BackgroundService,IDisposable
+    public class Worker : BackgroundService, IDisposable
     {
         private readonly ILogger<Worker> _logger;
         public ConcurrentBag<SensorObs>? Obs { get; private set; } = new();
 
-
-        private readonly IHubContext<SensorHub,ISensorHub> _sensorHub;
-        public Worker(ILogger<Worker> logger,  IHubContext<SensorHub, ISensorHub> sensorHub)
+        private readonly IHubContext<SensorHub, ISensorHub> _sensorHub;
+        public Worker(ILogger<Worker> logger, IHubContext<SensorHub, ISensorHub> sensorHub)
         {
             _logger = logger;
             for (var i = 0; i < 10; i++)
             {
-
                 Obs?.Add(new SensorObs());
             };
 
@@ -35,9 +26,6 @@ namespace SignalDashBoard
             }
             _sensorHub = sensorHub;
 
-            
-
-
         }
 
 
@@ -45,28 +33,23 @@ namespace SignalDashBoard
         {
             if (Obs != null)
             {
-                 foreach (var sensorOb in Obs)
-                 {
-                     sensorOb
-                         .Subscribe(x =>
-                         {
-                             _sensorHub.Clients.All.SendMessage(new SensorData()
-                                 { Humidy = x.Humidity, WindSpeed = x.WindSpeed, Sensor = sensorOb.Name, StatusServer = sensorOb.IsRunning,Temp = x.Temp});
-                         });
+                foreach (var sensorOb in Obs)
+                {
+                    sensorOb
+                        .Subscribe(x =>
+                        {
+                            _sensorHub.Clients.All.Message(new SensorData()
+                            { Humidy = x.Humidity, WindSpeed = x.WindSpeed, Sensor = sensorOb.Name, StatusServer = sensorOb.IsRunning, Temp = x.Temp });
+                        });
+                    sensorOb.Start();
 
-                     
-
-
-                     sensorOb.Start();
-
-                    
-                 }
+                }
             }
-               
+
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                
+
                 await Task.Delay(1000, stoppingToken);
             }
         }

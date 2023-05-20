@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using rx.core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using rx.core.sensor;
 
 namespace SignalDashBoard
 {
@@ -17,16 +17,16 @@ namespace SignalDashBoard
             this._service = service;
         }
 
-        public async Task SendMessage(SensorData sensorData)
-            => await Clients.All.SendMessage(sensorData);
+        public async Task Message(SensorData sensorData)
+            => await Clients.All.Message(sensorData);
 
-        public async Task SendMessageToCaller(SensorData sensorData)
-            => await Clients.Caller.SendMessageToCaller(sensorData);
+        public async Task MessageToCaller(SensorData sensorData)
+            => await Clients.Caller.MessageToCaller(sensorData);
 
-        public async Task SendMessageToGroup(SensorData sensorData)
-            => await Clients.All.SendMessageToGroup(sensorData);
+        public async Task MessageToGroup(SensorData sensorData)
+            => await Clients.All.MessageToGroup(sensorData);
 
-        public async Task StartStop(string server)
+        public async Task StartStopSensor(string server)
         {
 
             var worker = _service.GetServices<IHostedService>().OfType<Worker>().Single();

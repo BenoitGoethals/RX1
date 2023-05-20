@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Rx.Blazor.Data;
-using rx.core;
 using rx.core.chat;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
@@ -12,6 +11,7 @@ using Rx.Blazor;
 using Rx.Blazor.Services.Authentication;
 using Rx.Blazor.Services.Base;
 using Blazored.LocalStorage;
+using rx.core.sensor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,8 @@ builder.Services.AddSignalR(configure: options => { options.EnableDetailedErrors
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<SensorObs>();
 builder.Services.AddSingleton<ChatServer>();
-builder.Services.AddScoped<ISensorSignalRClient, SensorSignalRClient>();
+builder.Services.AddScoped<IBackendSignalRClient, SignalRClient>();
+builder.Services.AddScoped<IBackendSignalRTrackerClient, SignalRTrackerClient>();
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(

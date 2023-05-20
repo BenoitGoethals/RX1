@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using rx.core.openweather;
-using static rx.core.openweather.OpenWeatherHelper;
 
-namespace rx.core;
+
+namespace rx.core.sensor.openweather;
 
 public class OpenWeatherData : ISensorData
 {
@@ -19,25 +19,25 @@ public class OpenWeatherData : ISensorData
         {
             string openWeatherKey = GetApiKey();
             string byCity = GetUrl(_loc.CityName, _loc.StateAbbrev, _loc.CountryCode, openWeatherKey);
-            Root? weather;
+            OpenWeatherHelper.Root? weather;
             using (var client = new HttpClient())
             using (var response = client.GetAsync(byCity))
             using (var content = response.Result)
             {
                 var cityData = content.Content.ReadAsStringAsync().Result;
 
-                weather = JsonConvert.DeserializeObject<Root>(cityData);
+                weather = JsonConvert.DeserializeObject<OpenWeatherHelper.Root>(cityData);
             }
-       
+
             if (weather != null)
             {
-                Measurement? measurement = new Measurement() { TimeCreated = DateTime.Now, Temp = (int)weather.list[0].main.temp, Humidity = (int)weather.list[0].main.humidity, WindSpeed = (int)weather.list[0].wind.speed };
+                Measurement? measurement = new Measurement() { TimeCreated = DateTime.Now, Temp = (int)weather.list[0].main.temp, Humidity = weather.list[0].main.humidity, WindSpeed = (int)weather.list[0].wind.speed };
                 return measurement;
             }
         }
         catch (Exception e)
         {
-          
+
             return default;
         }
 

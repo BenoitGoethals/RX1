@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using Blazored.LocalStorage;
-using System.Net.Http.Headers;
 
 namespace Rx.Blazor.Services.Base
 {

@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <None Remove="geo.csv" />
+    <None Remove="route.gpx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="route.gpx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +25,21 @@
 
   <ItemGroup>
     <Folder Include="chat\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="res.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>res.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="res.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>res.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@ public class TrackWorker : BackgroundService, IDisposable
     public TrackWorker(ILogger<Worker> logger, IHubContext<TrackHub, ITrackHub> hubContext)
     {
         _logger = logger;
-        Engines?.Add(new TrackEngine("C:\\Users\\benoit\\source\\repos\\RX1\\rx.coreTests\\track\\route.gpx"));
+        Engines?.Add(new TrackEngine("route.gpx"));
         _hubContext = hubContext;
     }
 

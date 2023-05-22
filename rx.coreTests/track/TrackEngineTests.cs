@@ -8,7 +8,7 @@ namespace rx.coreTests.track
         [Fact()]
         public void TrackEngineTest()
         {
-            TrackEngine engine = new TrackEngine("C:\\Users\\benoit\\source\\repos\\RX1\\rx.coreTests\\track\\route.gpx");
+            TrackEngine engine = new TrackEngine(".\\track\\route.gpx");
 
             Assert.NotNull(engine);
         }

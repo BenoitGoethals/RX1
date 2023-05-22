@@ -3,6 +3,7 @@ using rx.core.track.gpx;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
+using System.Resources;
 using CoordinateSharp;
 
 namespace rx.core.track;
@@ -45,9 +46,14 @@ public class TrackEngine
 
     }
 
-    public void Start()
+    public bool Start()
     {
-        Task.Run(async () => { await RunProduce().ConfigureAwait(false); }, _cancellationToken);
+        if (_tracks.Count > 0)
+        {
+            Task.Run(async () => { await RunProduce().ConfigureAwait(false); }, _cancellationToken);
+        }
+
+        return false;
 
     }
     public void Stop()
@@ -57,36 +63,46 @@ public class TrackEngine
     }
     private void LoadData(string gpx)
     {
-        
-        var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(gpx);
-        if(File.Exists(gpx) && stream==null)
+        Stream? stream = typeof(TrackEngine).Assembly.GetManifestResourceStream("rx.core." + gpx);
+
+        GpxReader? reader = null;
+        if (stream != null)
         {
-
-            stream = File.OpenRead(gpx);
-        } 
-            
-
-        if (stream == null) return;
-      
-        using GpxReader reader = new GpxReader(stream);
-        Stream output;
-
-        while (reader.Read())
+            reader = new GpxReader(stream);
+        }
+        else if (File.Exists(gpx) && stream == null)
         {
-            switch (reader.ObjectType)
+            reader = new GpxReader(File.OpenRead(gpx));
+        }
+
+        if(reader == null) return;
+        using (reader)
+        {
+            Stream output;
+
+            while (reader.Read())
             {
-                case GpxObjectType.Metadata:
-                    break;
-                case GpxObjectType.WayPoint:
-                    break;
-                case GpxObjectType.Route:
-                    foreach (var points in reader.Route.RoutePoints)
-                    {
-                        _tracks.Add(new Track(){Description = points.Description,Location = new Coordinate(points.Latitude,points.Longitude),Name = reader.Route.Name});
-                    }
-                    break;
-                case GpxObjectType.Track:
-                    break;
+                switch (reader.ObjectType)
+                {
+                    case GpxObjectType.Metadata:
+                        break;
+                    case GpxObjectType.WayPoint:
+                        break;
+                    case GpxObjectType.Route:
+                        foreach (var points in reader.Route.RoutePoints)
+                        {
+                            _tracks.Add(new Track() { Description = points.Description, Location = new Coordinate(points.Latitude, points.Longitude), Name = reader.Route.Name });
+                        }
+                        break;
+                    case GpxObjectType.Track:
+                        break;
+                    case GpxObjectType.None:
+                        break;
+                    case GpxObjectType.Attributes:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }

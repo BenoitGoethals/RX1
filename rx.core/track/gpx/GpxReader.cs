@@ -16,7 +16,7 @@ namespace rx.core.track.gpx
         public GpxRoute Route { get; private set; }
         public GpxTrack Track { get; private set; }
 
-        public GpxReader(Stream stream)
+        public GpxReader(Stream? stream)
         {
             Reader_ = XmlReader.Create(stream);
 

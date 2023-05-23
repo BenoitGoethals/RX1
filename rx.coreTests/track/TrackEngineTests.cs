@@ -1,4 +1,5 @@
-﻿using rx.core.track;
+﻿using FluentAssertions;
+using rx.core.track;
 using Xunit;
 
 namespace rx.coreTests.track
@@ -9,8 +10,7 @@ namespace rx.coreTests.track
         public void TrackEngineTest()
         {
             TrackEngine engine = new TrackEngine(".\\track\\route.gpx");
-
-            Assert.NotNull(engine);
+            engine.Tracks.Should().HaveCountGreaterThan(0);
         }
 
     }

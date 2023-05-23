@@ -14,7 +14,7 @@ public class TrackEngine
     public event EventHandler<TrackEngineEventArgs>? TrackEngineEvents;
     private CancellationToken _cancellationToken;
     private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly ConcurrentBag<Track> _tracks = new();
+    public readonly ConcurrentBag<Track> Tracks = new();
     public bool IsRunning { get; private set; }
     public string? Name { get; set; }
 
@@ -33,7 +33,7 @@ public class TrackEngine
         while (!_cancellationToken.IsCancellationRequested)
         {
 
-            foreach (var tr in _tracks)
+            foreach (var tr in Tracks)
             {
                 var delay = Task.Delay(5000, _cancellationToken);
 
@@ -48,7 +48,7 @@ public class TrackEngine
 
     public bool Start()
     {
-        if (_tracks.Count > 0)
+        if (Tracks.Count > 0)
         {
             Task.Run(async () => { await RunProduce().ConfigureAwait(false); }, _cancellationToken);
         }
@@ -91,7 +91,7 @@ public class TrackEngine
                     case GpxObjectType.Route:
                         foreach (var points in reader.Route.RoutePoints)
                         {
-                            _tracks.Add(new Track() { Description = points.Description, Location = new Coordinate(points.Latitude, points.Longitude), Name = reader.Route.Name });
+                            Tracks.Add(new Track() { Description = points.Description, Location = new Coordinate(points.Latitude, points.Longitude), Name = reader.Route.Name });
                         }
                         break;
                     case GpxObjectType.Track:

@@ -1,9 +1,5 @@
-﻿using CoordinateSharp.Debuggers;
-using rx.core.track.gpx;
+﻿using rx.core.track.gpx;
 using System.Collections.Concurrent;
-using System.IO;
-using System.Reflection;
-using System.Resources;
 using CoordinateSharp;
 
 namespace rx.core.track;
@@ -24,6 +20,12 @@ public class TrackEngine
 
     }
 
+    public TrackEngine(Stream? gpx)
+    {
+        LoadData(gpx);
+
+    }
+
 
     private async Task RunProduce()
     {
@@ -32,7 +34,6 @@ public class TrackEngine
         _cancellationToken = _cancellationTokenSource.Token;
         while (!_cancellationToken.IsCancellationRequested)
         {
-
             foreach (var tr in Tracks)
             {
                 var delay = Task.Delay(5000, _cancellationToken);
@@ -40,8 +41,6 @@ public class TrackEngine
                 TrackEngineEvents?.Invoke(this, new TrackEngineEventArgs() { Track = tr });
                 await delay;
             }
-
-
         }
 
     }
@@ -61,21 +60,35 @@ public class TrackEngine
         _cancellationTokenSource.Cancel();
 
     }
-    private void LoadData(string gpx)
-    {
-        Stream? stream = typeof(TrackEngine).Assembly.GetManifestResourceStream("rx.core." + gpx);
 
-        GpxReader? reader = null;
+    private void LoadData(Stream? stream)
+    {
+       GpxReader? reader = null;
         if (stream != null)
         {
             reader = new GpxReader(stream);
         }
-        else if (File.Exists(gpx) && stream == null)
+       
+
+        if (reader == null) return;
+        GetTracks(reader);
+    }
+
+    private void LoadData(string gpx)
+    {
+        Stream? stream = typeof(TrackEngine).Assembly.GetManifestResourceStream(gpx);
+        GpxReader? reader = null;
+        if (stream != null)
         {
             reader = new GpxReader(File.OpenRead(gpx));
         }
 
         if(reader == null) return;
+        GetTracks(reader);
+    }
+
+    private void GetTracks(GpxReader reader)
+    {
         using (reader)
         {
             Stream output;
@@ -91,8 +104,13 @@ public class TrackEngine
                     case GpxObjectType.Route:
                         foreach (var points in reader.Route.RoutePoints)
                         {
-                            Tracks.Add(new Track() { Description = points.Description, Location = new Coordinate(points.Latitude, points.Longitude), Name = reader.Route.Name });
+                            Tracks.Add(new Track()
+                            {
+                                Description = points.Description,
+                                Location = new Coordinate(points.Latitude, points.Longitude), Name = reader.Route.Name
+                            });
                         }
+
                         break;
                     case GpxObjectType.Track:
                         break;
@@ -106,7 +124,6 @@ public class TrackEngine
             }
         }
     }
-
 }
 
 public class TrackEngineEventArgs : EventArgs
